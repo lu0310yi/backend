@@ -1,0 +1,6 @@
+CREATE TABLE county(
+county_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+province VARCHAR(10),
+city VARCHAR(10),
+county VARCHAR(10) 
+)

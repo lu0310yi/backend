@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mypro.mapper.AttractionMapper" >
+  <resultMap id="BaseResultMap" type="com.mypro.beans.Attraction" >
+    <constructor >
+      <idArg column="attraction_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="location" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="score" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="latitude" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="longtitude" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="visited_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="want_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="recommend_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="author_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="gmt_create" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    attraction_id, name, location, description, score, latitude, longtitude, visited_count,
+    want_count, recommend_count, cover, author_id, gmt_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mypro.beans.AttractionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from attraction
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from attraction
+    where attraction_id = ${attractionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from attraction
+    where attraction_id = #{attractionId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mypro.beans.AttractionExample" >
+    delete from attraction
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mypro.beans.Attraction" >
+    insert into attraction (attraction_id, name, location,
+      description, score, latitude,
+      longtitude, visited_count, want_count,
+      recommend_count, cover, author_id,
+      gmt_create)
+    values (#{attractionId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
+      #{longtitude,jdbcType=DOUBLE}, #{visitedCount,jdbcType=BIGINT}, #{wantCount,jdbcType=BIGINT},
+      #{recommendCount,jdbcType=BIGINT}, #{cover,jdbcType=VARCHAR}, #{authorId,jdbcType=BIGINT},
+      #{gmtCreate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mypro.beans.Attraction" >
+    insert into attraction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="attractionId != null" >
+        attraction_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="longtitude != null" >
+        longtitude,
+      </if>
+      <if test="visitedCount != null" >
+        visited_count,
+      </if>
+      <if test="wantCount != null" >
+        want_count,
+      </if>
+      <if test="recommendCount != null" >
+        recommend_count,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="authorId != null" >
+        author_id,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="attractionId != null" >
+        #{attractionId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longtitude != null" >
+        #{longtitude,jdbcType=DOUBLE},
+      </if>
+      <if test="visitedCount != null" >
+        #{visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="wantCount != null" >
+        #{wantCount,jdbcType=BIGINT},
+      </if>
+      <if test="recommendCount != null" >
+        #{recommendCount,jdbcType=BIGINT},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mypro.beans.AttractionExample" resultType="java.lang.Integer" >
+    select count(*) from attraction
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByIdList" resultType="com.mypro.beans.Attraction">
+    select * from attraction
+<!--    <where>-->
+<!--      <if test="universalCode!=null and  universalCode!=''">-->
+<!--        and UniversalCode = #{universalCode}-->
+<!--      </if>-->
+<!--    </where>-->
+            where attraction_id in
+    <foreach collection="idList" open="(" close = ")" item = "item" index = "index" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  <select id="selectByKey" resultType="com.mypro.beans.Attraction">
+    select * from attraction  where name like #{key} or location like '%' #{key} '%'
+    or `description` like '%' #{key} '%'
+    order by
+    <choose>
+         <when test="filter=0">nickname</when>
+         <when test="filter=1">
+            (SELECT COUNT(*) FROM attractionship WHERE attraction_id=attraction.`attraction_id`)
+         </when>
+         <when test="filter=2">
+            (SELECT COUNT(*) FROM post WHERE attraction_id=attraction.`attraction_id`)
+         </when>
+         <when test="filter=3">
+
+         </when>
+    </choose>
+    ${order}
+  </select>
+  <select id="selectByRecommend" resultType="com.mypro.beans.Attraction">
+    select * from attraction order by recommend_count desc
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update attraction
+    <set >
+      <if test="record.attractionId != null" >
+        attraction_id = #{record.attractionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.longtitude != null" >
+        longtitude = #{record.longtitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.visitedCount != null" >
+        visited_count = #{record.visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.wantCount != null" >
+        want_count = #{record.wantCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.recommendCount != null" >
+        recommend_count = #{record.recommendCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.cover != null" >
+        cover = #{record.cover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorId != null" >
+        author_id = #{record.authorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update attraction
+    set attraction_id = #{record.attractionId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=DOUBLE},
+      latitude = #{record.latitude,jdbcType=DOUBLE},
+      longtitude = #{record.longtitude,jdbcType=DOUBLE},
+      visited_count = #{record.visitedCount,jdbcType=BIGINT},
+      want_count = #{record.wantCount,jdbcType=BIGINT},
+      recommend_count = #{record.recommendCount,jdbcType=BIGINT},
+      cover = #{record.cover,jdbcType=VARCHAR},
+      author_id = #{record.authorId,jdbcType=BIGINT},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mypro.beans.Attraction" >
+    update attraction
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="longtitude != null" >
+        longtitude = #{longtitude,jdbcType=DOUBLE},
+      </if>
+      <if test="visitedCount != null" >
+        visited_count = #{visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="wantCount != null" >
+        want_count = #{wantCount,jdbcType=BIGINT},
+      </if>
+      <if test="recommendCount != null" >
+        recommend_count = #{recommendCount,jdbcType=BIGINT},
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        author_id = #{authorId,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where attraction_id = #{attractionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mypro.beans.Attraction" >
+    update attraction
+    set name = #{name,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      longtitude = #{longtitude,jdbcType=DOUBLE},
+      visited_count = #{visitedCount,jdbcType=BIGINT},
+      want_count = #{wantCount,jdbcType=BIGINT},
+      recommend_count = #{recommendCount,jdbcType=BIGINT},
+      cover = #{cover,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=BIGINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where attraction_id = #{attractionId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mypro.mapper.TopicMapper" >
+  <resultMap id="BaseResultMap" type="com.mypro.beans.Topic" >
+    <constructor >
+      <idArg column="topic_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="author_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="gmt_create" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="visited_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="follow_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    topic_id, name, description, author_id, gmt_create, visited_count, follow_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mypro.beans.TopicExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from topic
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mypro.beans.TopicExample" >
+    delete from topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mypro.beans.Topic" >
+    insert into topic (topic_id, name, description, 
+      author_id, gmt_create, visited_count, 
+      follow_count)
+    values (#{topicId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{authorId,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{visitedCount,jdbcType=BIGINT}, 
+      #{followCount,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mypro.beans.Topic" >
+    insert into topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        topic_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="authorId != null" >
+        author_id,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="visitedCount != null" >
+        visited_count,
+      </if>
+      <if test="followCount != null" >
+        follow_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        #{topicId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitedCount != null" >
+        #{visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="followCount != null" >
+        #{followCount,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mypro.beans.TopicExample" resultType="java.lang.Integer" >
+    select count(*) from topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByIdList" resultType="com.mypro.beans.Topic">
+    select * from topic where topic_id in
+    <foreach collection="idList" open="(" close = ")" item = "item" index = "index" separator=",">
+      #{item}
+    </foreach>
+  </select>
+    <select id="selectByKey" resultType="com.mypro.beans.Topic">
+      select * from topic  where name like '%' #{key} '%' or description like '%' #{key} '%'
+      order by
+      <choose>
+        <when test="filter=0">name</when>
+        <when test="filter=1">
+          (SELECT COUNT(*) FROM topicship WHERE topic_id=topic.`topic_id`)
+        </when>
+        <when test="filter=2">
+          (SELECT COUNT(*) FROM post WHERE topic_id=topic.`topic_id`)
+        </when>
+        <when test="filter=3">
+
+        </when>
+      </choose>
+      ${order}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+    update topic
+    <set >
+      <if test="record.topicId != null" >
+        topic_id = #{record.topicId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorId != null" >
+        author_id = #{record.authorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.visitedCount != null" >
+        visited_count = #{record.visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.followCount != null" >
+        follow_count = #{record.followCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update topic
+    set topic_id = #{record.topicId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      author_id = #{record.authorId,jdbcType=BIGINT},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      visited_count = #{record.visitedCount,jdbcType=BIGINT},
+      follow_count = #{record.followCount,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mypro.beans.Topic" >
+    update topic
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        author_id = #{authorId,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitedCount != null" >
+        visited_count = #{visitedCount,jdbcType=BIGINT},
+      </if>
+      <if test="followCount != null" >
+        follow_count = #{followCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mypro.beans.Topic" >
+    update topic
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=BIGINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      visited_count = #{visitedCount,jdbcType=BIGINT},
+      follow_count = #{followCount,jdbcType=BIGINT}
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+</mapper>

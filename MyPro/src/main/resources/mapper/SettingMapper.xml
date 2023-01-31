@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mypro.mapper.SettingMapper" >
+  <resultMap id="BaseResultMap" type="com.mypro.beans.Setting" >
+    <constructor >
+      <idArg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="follow_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="fans_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="visited_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="want_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="location_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="thumbup_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="favorites_visible" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="default_favorites_public" jdbcType="TINYINT" javaType="java.lang.Byte" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, follow_visible, fans_visible, visited_visible, want_visible, location_visible, 
+    thumbup_visible, favorites_visible, default_favorites_public
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mypro.beans.SettingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from setting
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from setting
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mypro.beans.SettingExample" >
+    delete from setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mypro.beans.Setting" >
+    insert into setting (user_id, follow_visible, fans_visible, 
+      visited_visible, want_visible, location_visible, 
+      thumbup_visible, favorites_visible, default_favorites_public
+      )
+    values (#{userId,jdbcType=BIGINT}, #{followVisible,jdbcType=TINYINT}, #{fansVisible,jdbcType=TINYINT}, 
+      #{visitedVisible,jdbcType=TINYINT}, #{wantVisible,jdbcType=TINYINT}, #{locationVisible,jdbcType=TINYINT}, 
+      #{thumbupVisible,jdbcType=TINYINT}, #{favoritesVisible,jdbcType=TINYINT}, #{defaultFavoritesPublic,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mypro.beans.Setting" >
+    insert into setting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="followVisible != null" >
+        follow_visible,
+      </if>
+      <if test="fansVisible != null" >
+        fans_visible,
+      </if>
+      <if test="visitedVisible != null" >
+        visited_visible,
+      </if>
+      <if test="wantVisible != null" >
+        want_visible,
+      </if>
+      <if test="locationVisible != null" >
+        location_visible,
+      </if>
+      <if test="thumbupVisible != null" >
+        thumbup_visible,
+      </if>
+      <if test="favoritesVisible != null" >
+        favorites_visible,
+      </if>
+      <if test="defaultFavoritesPublic != null" >
+        default_favorites_public,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="followVisible != null" >
+        #{followVisible,jdbcType=TINYINT},
+      </if>
+      <if test="fansVisible != null" >
+        #{fansVisible,jdbcType=TINYINT},
+      </if>
+      <if test="visitedVisible != null" >
+        #{visitedVisible,jdbcType=TINYINT},
+      </if>
+      <if test="wantVisible != null" >
+        #{wantVisible,jdbcType=TINYINT},
+      </if>
+      <if test="locationVisible != null" >
+        #{locationVisible,jdbcType=TINYINT},
+      </if>
+      <if test="thumbupVisible != null" >
+        #{thumbupVisible,jdbcType=TINYINT},
+      </if>
+      <if test="favoritesVisible != null" >
+        #{favoritesVisible,jdbcType=TINYINT},
+      </if>
+      <if test="defaultFavoritesPublic != null" >
+        #{defaultFavoritesPublic,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mypro.beans.SettingExample" resultType="java.lang.Integer" >
+    select count(*) from setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update setting
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.followVisible != null" >
+        follow_visible = #{record.followVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.fansVisible != null" >
+        fans_visible = #{record.fansVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.visitedVisible != null" >
+        visited_visible = #{record.visitedVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.wantVisible != null" >
+        want_visible = #{record.wantVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.locationVisible != null" >
+        location_visible = #{record.locationVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.thumbupVisible != null" >
+        thumbup_visible = #{record.thumbupVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.favoritesVisible != null" >
+        favorites_visible = #{record.favoritesVisible,jdbcType=TINYINT},
+      </if>
+      <if test="record.defaultFavoritesPublic != null" >
+        default_favorites_public = #{record.defaultFavoritesPublic,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update setting
+    set user_id = #{record.userId,jdbcType=BIGINT},
+      follow_visible = #{record.followVisible,jdbcType=TINYINT},
+      fans_visible = #{record.fansVisible,jdbcType=TINYINT},
+      visited_visible = #{record.visitedVisible,jdbcType=TINYINT},
+      want_visible = #{record.wantVisible,jdbcType=TINYINT},
+      location_visible = #{record.locationVisible,jdbcType=TINYINT},
+      thumbup_visible = #{record.thumbupVisible,jdbcType=TINYINT},
+      favorites_visible = #{record.favoritesVisible,jdbcType=TINYINT},
+      default_favorites_public = #{record.defaultFavoritesPublic,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mypro.beans.Setting" >
+    update setting
+    <set >
+      <if test="followVisible != null" >
+        follow_visible = #{followVisible,jdbcType=TINYINT},
+      </if>
+      <if test="fansVisible != null" >
+        fans_visible = #{fansVisible,jdbcType=TINYINT},
+      </if>
+      <if test="visitedVisible != null" >
+        visited_visible = #{visitedVisible,jdbcType=TINYINT},
+      </if>
+      <if test="wantVisible != null" >
+        want_visible = #{wantVisible,jdbcType=TINYINT},
+      </if>
+      <if test="locationVisible != null" >
+        location_visible = #{locationVisible,jdbcType=TINYINT},
+      </if>
+      <if test="thumbupVisible != null" >
+        thumbup_visible = #{thumbupVisible,jdbcType=TINYINT},
+      </if>
+      <if test="favoritesVisible != null" >
+        favorites_visible = #{favoritesVisible,jdbcType=TINYINT},
+      </if>
+      <if test="defaultFavoritesPublic != null" >
+        default_favorites_public = #{defaultFavoritesPublic,jdbcType=TINYINT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mypro.beans.Setting" >
+    update setting
+    set follow_visible = #{followVisible,jdbcType=TINYINT},
+      fans_visible = #{fansVisible,jdbcType=TINYINT},
+      visited_visible = #{visitedVisible,jdbcType=TINYINT},
+      want_visible = #{wantVisible,jdbcType=TINYINT},
+      location_visible = #{locationVisible,jdbcType=TINYINT},
+      thumbup_visible = #{thumbupVisible,jdbcType=TINYINT},
+      favorites_visible = #{favoritesVisible,jdbcType=TINYINT},
+      default_favorites_public = #{defaultFavoritesPublic,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

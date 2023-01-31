@@ -1,0 +1,9 @@
+CREATE TABLE COMMENT(
+comment_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+user_id BIGINT UNSIGNED,
+pac_id BIGINT UNSIGNED,
+gmt_create DATETIME,
+content VARCHAR(200),
+reply_count INT,
+thumbup_count INT
+)

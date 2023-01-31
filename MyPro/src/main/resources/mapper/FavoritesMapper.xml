@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mypro.mapper.FavoritesMapper" >
+  <resultMap id="BaseResultMap" type="com.mypro.beans.Favorites" >
+    <constructor >
+      <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="folder_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_public" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="item_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="follow_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="visited_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="thumbup_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="cover" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="gmt_create" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="gmt_edit" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, folder_id, name, description, is_public, item_count, follow_count, visited_count,
+    thumbup_count, cover, gmt_create, gmt_edit
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mypro.beans.FavoritesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from favorites
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mypro.beans.FavoritesExample" >
+    delete from favorites
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mypro.beans.Favorites" >
+    insert into favorites (user_id, folder_id, name, 
+      description, is_public, item_count,
+      follow_count, visited_count, thumbup_count, 
+      cover, gmt_create, gmt_edit
+      )
+    values (#{userId,jdbcType=BIGINT}, #{folderId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{isPublic,jdbcType=BIT}, #{itemCount,jdbcType=INTEGER},
+      #{followCount,jdbcType=INTEGER}, #{visitedCount,jdbcType=INTEGER}, #{thumbupCount,jdbcType=INTEGER}, 
+      #{cover,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtEdit,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mypro.beans.Favorites" >
+    insert into favorites
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="folderId != null" >
+        folder_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="isPublic != null" >
+        is_public,
+      </if>
+      <if test="itemCount != null" >
+        item_count,
+      </if>
+      <if test="followCount != null" >
+        follow_count,
+      </if>
+      <if test="visitedCount != null" >
+        visited_count,
+      </if>
+      <if test="thumbupCount != null" >
+        thumbup_count,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtEdit != null" >
+        gmt_edit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="folderId != null" >
+        #{folderId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="isPublic != null" >
+        #{isPublic,jdbcType=BIT},
+      </if>
+      <if test="itemCount != null" >
+        #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="followCount != null" >
+        #{followCount,jdbcType=INTEGER},
+      </if>
+      <if test="visitedCount != null" >
+        #{visitedCount,jdbcType=INTEGER},
+      </if>
+      <if test="thumbupCount != null" >
+        #{thumbupCount,jdbcType=INTEGER},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtEdit != null" >
+        #{gmtEdit,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mypro.beans.FavoritesExample" resultType="java.lang.Integer" >
+    select count(*) from favorites
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <select id="selectByPrimaryKey" resultType="com.mypro.beans.Favorites">
+        select
+        <include refid="Base_Column_List" />
+        from favorites
+        where folder_id = #{favoritesId,jdbcType=BIGINT}
+      </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+    update favorites
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.folderId != null" >
+        folder_id = #{record.folderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isPublic != null" >
+        is_public = #{record.isPublic,jdbcType=BIT},
+      </if>
+      <if test="record.itemCount != null" >
+        item_count = #{record.itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.followCount != null" >
+        follow_count = #{record.followCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitedCount != null" >
+        visited_count = #{record.visitedCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.thumbupCount != null" >
+        thumbup_count = #{record.thumbupCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.cover != null" >
+        cover = #{record.cover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null" >
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtEdit != null" >
+        gmt_edit = #{record.gmtEdit,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update favorites
+    set user_id = #{record.userId,jdbcType=BIGINT},
+      folder_id = #{record.folderId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      is_public = #{record.isPublic,jdbcType=BIT},
+      item_count = #{record.itemCount,jdbcType=INTEGER},
+      follow_count = #{record.followCount,jdbcType=INTEGER},
+      visited_count = #{record.visitedCount,jdbcType=INTEGER},
+      thumbup_count = #{record.thumbupCount,jdbcType=INTEGER},
+      cover = #{record.cover,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_edit = #{record.gmtEdit,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
