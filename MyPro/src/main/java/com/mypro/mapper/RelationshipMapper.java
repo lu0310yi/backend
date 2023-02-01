@@ -22,7 +22,7 @@ public interface RelationshipMapper {
 
     int updateByExample(@Param("record") Relationship record, @Param("example") RelationshipExample example);
 
-    List<Long> selectObjIdBySubId(Long userId,char type);
+    List<Long> selectObjIdBySubId(Long userId,List status );
 
     List<Long> selectSubIdByObjId(Long userId);
     String selectStatus(Long userId,Long friendId);

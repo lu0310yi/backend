@@ -21,7 +21,7 @@ public interface UserService {
      * @return
      */
     public User getInfoById(Long userId);
-    public List<User> getFollowing(Long userId, char type);
+    public List<User> getFollowing(Long userId,char type);
     public List<User> getFollowers(Long userId);
 
     List<String> getAlbum(Long userId);

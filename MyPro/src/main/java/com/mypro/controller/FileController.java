@@ -38,7 +38,6 @@ public class FileController {
      */
     @PostMapping("/upload")
     public String upload(@RequestBody MultipartFile file) throws IOException {
-        System.out.println(file);
         String name = file.getOriginalFilename();
         String type = FileUtil.extName(name);
         Long size = file.getSize();
@@ -73,7 +72,7 @@ public class FileController {
         return url;
     }
 
-    @GetMapping("/{fileUUID}")
+    @GetMapping("/download/{fileUUID}")
     public void download(@PathVariable("fileUUID")String fileUUID, HttpServletResponse response) throws IOException {
         File file = new File(fileUploadPath+ fileUUID) ;
         ServletOutputStream os = response.getOutputStream();

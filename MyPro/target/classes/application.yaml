@@ -13,6 +13,12 @@ spring:
       max-file-size: 50MB
       # 所有上传文件最大大小
       max-request-size: 50MB
+  web:
+    resources:
+      static-locations: file:D:\desktop\program\GithubPro\files
+
+#file:
+#    staticAccessPath: file/**
 #  servlet:
 #    multipart:
 #      max-file-size: 1024Mb
@@ -33,4 +39,6 @@ pagehelper:
 files:
   upload:
     path: D:\DeskTop\program\GithubPro\files\
+sonImgPath: /file/
+absoluteImgPath: D:\DeskTop\program\GithubPro\files\
 

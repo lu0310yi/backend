@@ -68,11 +68,49 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getFollowing(Long userId, char type) {
-        List<Long> objIdList = relationshipMapper.selectObjIdBySubId(userId,type);
+//        List<Long> objIdList = relationshipMapper.selectObjIdBySubId(userId,type);
+//
+//        UserExample userExample = new UserExample();
+//        userExample.createCriteria().andUserIdIn(objIdList);
+//        return userMapper.selectByExample(userExample);
+        Long visitorId = TokenUtil.getUserId();
+        List<Long> objIdList = null;
+        if(48==type) {
+            List<String> status = Arrays.asList("1","0");
+            objIdList = relationshipMapper.selectObjIdBySubId(userId,status);
+        }else if(49==type) {
+            List<String> status = Arrays.asList("0");
+            objIdList = relationshipMapper.selectObjIdBySubId(userId,status);
+        }else if(50==type){
+            List<String> status = Arrays.asList("1");
+            objIdList = relationshipMapper.selectObjIdBySubId(userId,status);
+        }
 
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUserIdIn(objIdList);
-        return userMapper.selectByExample(userExample);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if(visitorId==userId) {
+            return userList;
+        }
+        byte fansVisible = settingService.getInfo(userId).getFansVisible();
+        if("5".equals(getRelation(userId, visitorId))){
+            throw new ServiceException(ReturnCode.RC301.getCode(), "被拉黑");
+        }
+        String relation = getRelation(visitorId, userId);
+        if (0== fansVisible) {
+            return userList;
+        } else if (1== fansVisible) {
+            if ("1".equals(relation) || "2".equals(relation)) {
+                return  userList;
+            }
+            throw new ServiceException(ReturnCode.RC301.getCode(), "不是粉丝");
+        } else if (2== fansVisible) {
+            if ("3".equals(relation) || "4".equals(relation)) {
+                return  userList;
+            }
+            throw new ServiceException(ReturnCode.RC301.getCode(), "不是好友");
+        }
+        return null;
     }
 
     @Override

@@ -127,7 +127,10 @@
     </if>
   </select>
   <select id="selectObjIdBySubId" resultType="java.lang.Long">
-    select object_id from relationship where subject_id=#{userId} and status=#{type}
+    select object_id from relationship where subject_id=#{userId} and status in
+    <foreach collection="status" item="item" index="index" open="(" separator="," close=")">
+    #{item}
+  </foreach>
   </select>
   <select id="selectSubIdByObjId" resultType="java.lang.Long">
     select subject_id from relationship where object_id=#{userId} and status in ('1','0')
