@@ -32,7 +32,7 @@ public class TokenUtil {
     }
     public static String getToken(String userId,String password) {
         return JWT.create().withAudience(userId)//将userId保存到token作为载荷
-                .withExpiresAt(DateUtil.offsetHour(new Date(),2))//两小时
+                .withExpiresAt(DateUtil.offsetHour(new Date(),20))//两小时
                 .sign(Algorithm.HMAC256(password));//password为密钥
     }
     public static User getUser(){

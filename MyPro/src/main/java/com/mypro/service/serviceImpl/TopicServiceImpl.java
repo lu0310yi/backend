@@ -3,15 +3,18 @@ package com.mypro.service.serviceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mypro.beans.*;
+import com.mypro.exception.ServiceException;
 import com.mypro.mapper.ArticleMapper;
 import com.mypro.mapper.PostMapper;
 import com.mypro.mapper.TopicMapper;
 import com.mypro.mapper.TopicShipMapper;
+import com.mypro.resultHandle.ReturnCode;
 import com.mypro.service.TopicService;
 import com.mypro.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -66,12 +69,26 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void createTopic(Topic topic) {
-        topicMapper.insert(topic);
+        TopicExample topicExample = new TopicExample();
+        topicExample.createCriteria().andNameEqualTo(topic.getName());
+        List<Topic> topicList = topicMapper.selectByExample(topicExample);
+        if(topicList.size()>0){
+            throw new ServiceException(ReturnCode.RC401.getCode(),"该topic已存在");
+        }
+        topic.setAuthorId(TokenUtil.getUserId());
+        topic.setGmtCreate(new Date());
+        topicMapper.insertSelective(topic);
     }
 
     @Override
     public void updateTopic(Topic topic) {
-        topicMapper.updateByPrimaryKey(topic);
+        if(topicMapper.selectByPrimaryKey(topic.getTopicId())==null){
+            topic.setAuthorId(TokenUtil.getUserId());
+            topic.setGmtCreate(new Date());
+            topicMapper.insertSelective(topic);
+        }else {
+            topicMapper.updateByPrimaryKeySelective(topic);
+        }
     }
 
     @Override

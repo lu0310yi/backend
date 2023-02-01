@@ -1,9 +1,8 @@
 package com.mypro.mapper;
 
-import java.util.List;
-
 import com.mypro.beans.Comment;
 import com.mypro.beans.CommentExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface CommentMapper {

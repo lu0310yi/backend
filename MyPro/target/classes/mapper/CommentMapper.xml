@@ -10,6 +10,7 @@
       <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="reply_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="thumbup_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="type" jdbcType="CHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    comment_id, user_id, pac_id, gmt_create, content, reply_count, thumbup_count
+    comment_id, user_id, pac_id, gmt_create, content, reply_count, thumbup_count, type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mypro.beans.CommentExample" >
     select
@@ -106,10 +107,10 @@
   <insert id="insert" parameterType="com.mypro.beans.Comment" >
     insert into comment (comment_id, user_id, pac_id, 
       gmt_create, content, reply_count, 
-      thumbup_count)
+      thumbup_count, type)
     values (#{commentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{pacId,jdbcType=BIGINT}, 
       #{gmtCreate,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{replyCount,jdbcType=INTEGER}, 
-      #{thumbupCount,jdbcType=INTEGER})
+      #{thumbupCount,jdbcType=INTEGER}, #{type,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mypro.beans.Comment" >
     insert into comment
@@ -135,6 +136,9 @@
       <if test="thumbupCount != null" >
         thumbup_count,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="commentId != null" >
@@ -157,6 +161,9 @@
       </if>
       <if test="thumbupCount != null" >
         #{thumbupCount,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -190,6 +197,9 @@
       <if test="record.thumbupCount != null" >
         thumbup_count = #{record.thumbupCount,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -203,7 +213,8 @@
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       content = #{record.content,jdbcType=VARCHAR},
       reply_count = #{record.replyCount,jdbcType=INTEGER},
-      thumbup_count = #{record.thumbupCount,jdbcType=INTEGER}
+      thumbup_count = #{record.thumbupCount,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -229,6 +240,9 @@
       <if test="thumbupCount != null" >
         thumbup_count = #{thumbupCount,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
     </set>
     where comment_id = #{commentId,jdbcType=BIGINT}
   </update>
@@ -239,7 +253,8 @@
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=VARCHAR},
       reply_count = #{replyCount,jdbcType=INTEGER},
-      thumbup_count = #{thumbupCount,jdbcType=INTEGER}
+      thumbup_count = #{thumbupCount,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR}
     where comment_id = #{commentId,jdbcType=BIGINT}
   </update>
 </mapper>

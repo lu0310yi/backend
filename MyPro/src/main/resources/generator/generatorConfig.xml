@@ -59,9 +59,9 @@
 <!--        <table tableName="attractionship" domainObjectName="AttractionShip"></table>-->
 <!--        <table tableName="chatter"></table>-->
 <!--        <table tableName="collection"></table>-->
-        <table tableName="location"></table>
+<!--        <table tableName="location"></table>-->
         <!--        <table tableName="county"></table>-->
-<!--        <table tableName="comment"></table>-->
+        <table tableName="comment"></table>
 <!--        <table tableName="favorites"></table>-->
 <!--        <table tableName="favoritesship" domainObjectName="FavoritesShip"></table>-->
 <!--        <table tableName="message"></table>-->

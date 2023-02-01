@@ -1,10 +1,12 @@
 package com.mypro.service.serviceImpl;
 
 import com.mypro.beans.*;
+import com.mypro.exception.ServiceException;
 import com.mypro.mapper.CollectionMapper;
 import com.mypro.mapper.CommentMapper;
 import com.mypro.mapper.PacShipMapper;
 import com.mypro.mapper.PostMapper;
+import com.mypro.resultHandle.ReturnCode;
 import com.mypro.service.PostService;
 import com.mypro.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,30 +34,54 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void comment(Comment comment) {
-        commentMapper.insert(comment);
+        comment.setUserId(TokenUtil.getUserId());
+        comment.setType("0");
+        commentMapper.insertSelective(comment);
     }
 
     @Override
     public void thumbup(Long postId) {
-
+        Long userId = TokenUtil.getUserId();
+        PacShipExample pacShipExample = new PacShipExample();
+        pacShipExample.createCriteria().andUserIdEqualTo(userId).andPacIdEqualTo(postId).andPacTypeEqualTo("0");
+        List<PacShip> pacShipList = pacShipMapper.selectByExample(pacShipExample);
+        if(pacShipList.size()>0){
+            PacShip pacShip = pacShipList.get(0);
+            pacShip.setType("1");
+            pacShipMapper.updateByExampleSelective(pacShip,pacShipExample);
+            return;
+        }
+        pacShipMapper.insert(new PacShip(userId,postId,"1",null,new Date(),"0"));
     }
-
     @Override
     public void collect(Collection collection) {
-        collectionMapper.insert(collection);
-        Long userId = collection.getUserId();
-        Long pacId = collection.getPostArticleId();
-        String type = "2";
-        Date gmtOperation = new Date(System.currentTimeMillis());
-        Long folderId = collection.getFolderId();
-        String pacType = collection.getType();
-        pacShipMapper.insert(new PacShip(userId,pacId,type,folderId,gmtOperation,pacType));
+        Long userId = TokenUtil.getUserId();
+        collection.setUserId(userId);
+        if("1".equals(collection.getType())) {
+            CollectionExample collectionExample = new CollectionExample();
+            collectionExample.createCriteria().andTypeEqualTo(collection.getType())
+                    .andUserIdEqualTo(userId).andPostArticleIdEqualTo(collection.getPostArticleId()).
+                    andFolderIdEqualTo(collection.getFolderId());
+            List<Collection> collectionList = collectionMapper.selectByExample(collectionExample);
+            if (collectionList.size() <= 0) {
+                collectionMapper.insert(collection);
+                Long paId = collection.getPostArticleId();
+                String type = "2";
+                Date gmtOperation = new Date(System.currentTimeMillis());
+                Long folderId = collection.getFolderId();
+                String paType = "0";
+                pacShipMapper.insert(new PacShip(userId, paId, type, folderId, gmtOperation, paType));
+            }
+        }
+        else{
+            throw new ServiceException(ReturnCode.RC400.getCode(), "不是post");
+        }
     }
 
     @Override
     public List<Comment> getComments(Long postId) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andPacIdEqualTo(postId);
+        commentExample.createCriteria().andPacIdEqualTo(postId).andTypeEqualTo("0");
         return commentMapper.selectByExample(commentExample);
     }
 
@@ -66,10 +92,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void publishPost(Post post) {
-        if(postMapper.selectByPrimaryKey(post.getPostId())==null) {
-            post.setAuthorId(TokenUtil.getUserId());
-            postMapper.insert(post);
-        }
+        post.setAuthorId(TokenUtil.getUserId());
+        post.setGmtCreate(new Date());
+        post.setGmtEdit(new Date());
+        postMapper.insertSelective(post);
     }
 
     @Override
@@ -79,7 +105,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void updatePost(Post post) {
-        if(postMapper.updateByPrimaryKeySelective(post)==0){
+        post.setAuthorId(TokenUtil.getUserId());
+        post.setGmtEdit(new Date());
+        if(postMapper.selectByPrimaryKey(post.getPostId())!=null){
+            postMapper.updateByPrimaryKeySelective(post);
+        }else{
+            post.setGmtCreate(new Date());
             postMapper.insert(post);
         }
     }

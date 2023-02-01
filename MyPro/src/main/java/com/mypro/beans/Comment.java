@@ -1,8 +1,12 @@
 package com.mypro.beans;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@Data
+@NoArgsConstructor
 public class Comment implements Serializable {
     private Long commentId;
 
