@@ -121,7 +121,7 @@ CREATE TABLE `collection` (
 
 /*Data for the table `collection` */
 
-insert  into `collection`(`user_id`,`folder_id`,`post_article_id`,`gmt_collect`,`type`) values (1,1,1,'2023-01-06 14:38:40','1'),(1,1,2,'2023-01-27 14:38:50','1'),(1,1,3,'2022-12-26 14:38:53','0'),(1,2,1,'2023-01-05 16:51:11','1'),(1,1,15,'2023-01-31 21:27:33','0'),(1,2,15,'2023-01-12 21:27:53','0');
+insert  into `collection`(`user_id`,`folder_id`,`post_article_id`,`gmt_collect`,`type`) values (1,1,1,'2023-01-06 14:38:40','1'),(1,1,2,'2023-01-27 14:38:50','1'),(1,1,3,'2022-12-26 14:38:53','0'),(1,2,1,'2023-01-05 16:51:11','1'),(1,1,15,'2023-01-31 21:27:33','0'),(1,2,15,'2023-01-12 21:27:53','0'),(1,100,100,NULL,'1');
 
 /*Table structure for table `comment` */
 
@@ -137,11 +137,11 @@ CREATE TABLE `comment` (
   `thumbup_count` int DEFAULT NULL,
   `type` char(1) DEFAULT NULL,
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `comment` */
 
-insert  into `comment`(`comment_id`,`user_id`,`pac_id`,`gmt_create`,`content`,`reply_count`,`thumbup_count`,`type`) values (1,1,1,'2023-01-06 14:48:34','任何时候，都不要失去了自己！',1,2,NULL),(2,2,1,'2023-01-06 14:49:29','dqwdwd',1,2,NULL),(3,1,2,'2023-01-06 14:49:58','assss',1,1,NULL),(4,3,2,'2023-01-27 14:50:00','212',NULL,NULL,NULL);
+insert  into `comment`(`comment_id`,`user_id`,`pac_id`,`gmt_create`,`content`,`reply_count`,`thumbup_count`,`type`) values (1,1,1,'2023-01-06 14:48:34','任何时候，都不要失去了自己！',1,2,'0'),(2,2,1,'2023-01-06 14:49:29','dqwdwd',1,2,'0'),(3,1,2,'2023-01-06 14:49:58','assss',1,1,'0'),(4,3,2,'2023-01-27 14:50:00','212',NULL,NULL,NULL),(5,1,NULL,NULL,'洒水车考虑',NULL,NULL,'0'),(6,1,NULL,NULL,'洒水车考虑',NULL,NULL,'0'),(7,1,100,NULL,'洒水车考虑',NULL,NULL,'0');
 
 /*Table structure for table `county` */
 
@@ -230,6 +230,8 @@ CREATE TABLE `location` (
 
 /*Data for the table `location` */
 
+insert  into `location`(`user_id`,`latitude`,`longtitude`,`online`) values (1,100,100,1);
+
 /*Table structure for table `message` */
 
 DROP TABLE IF EXISTS `message`;
@@ -269,7 +271,7 @@ CREATE TABLE `pacship` (
 
 /*Data for the table `pacship` */
 
-insert  into `pacship`(`user_id`,`pac_id`,`type`,`favorites_id`,`gmt_operation`,`pac_type`) values (1,1,'1',1,'2023-01-03 16:36:57','0'),(1,2,'0',NULL,'2023-01-03 16:37:29','0'),(1,100,'1',NULL,'2023-01-31 21:09:59','1');
+insert  into `pacship`(`user_id`,`pac_id`,`type`,`favorites_id`,`gmt_operation`,`pac_type`) values (1,1,'1',1,'2023-01-03 16:36:57','0'),(1,2,'0',NULL,'2023-01-03 16:37:29','0'),(1,100,'1',100,'2023-02-01 09:58:36','0');
 
 /*Table structure for table `post` */
 
@@ -288,11 +290,11 @@ CREATE TABLE `post` (
   `collection_count` int DEFAULT NULL,
   `thumbup_count` int DEFAULT NULL,
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `post` */
 
-insert  into `post`(`post_id`,`author_id`,`gmt_create`,`gmt_edit`,`attraction_id`,`topic_id`,`content`,`images`,`comment_count`,`collection_count`,`thumbup_count`) values (1,1,'2023-01-06 15:00:48','2023-01-06 15:00:55',1,1,'生，只能越来越简单。','D://22,151515',1,1,1),(2,1,'2023-01-06 15:00:50','2023-01-06 15:00:57',1,1,'人生，其实就是不断地面对，不断的选择，不断的放弃','D://ss',2,1,2),(3,1,'2023-01-06 15:00:53','2023-01-06 15:01:02',3,1,'渐渐明白：缘分像一本书，翻的不经意会错过童话，读得太认真又会流干眼泪','D://ssss',1,1,1),(10,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'sdkskd','14120913,14120914,14120915,14120916',NULL,1,1),(100,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'sdkskd','14120913,14120914,14120915,14120916',NULL,1,1),(101,NULL,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'今天','1,2,3,4',0,0,0),(102,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'今天','1,2,3,4',0,0,0);
+insert  into `post`(`post_id`,`author_id`,`gmt_create`,`gmt_edit`,`attraction_id`,`topic_id`,`content`,`images`,`comment_count`,`collection_count`,`thumbup_count`) values (1,1,'2023-01-06 15:00:48','2023-01-06 15:00:55',1,1,'生，只能越来越简单。','D://22,151515',1,1,1),(2,1,'2023-01-06 15:00:50','2023-01-06 15:00:57',1,1,'人生，其实就是不断地面对，不断的选择，不断的放弃','D://ss',2,1,2),(3,1,'2023-01-06 15:00:53','2023-01-06 15:01:02',3,1,'渐渐明白：缘分像一本书，翻的不经意会错过童话，读得太认真又会流干眼泪','D://ssss',1,1,1),(10,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'sdkskd','14120913,14120914,14120915,14120916',NULL,1,1),(100,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'sdkskd','14120913,14120914,14120915,14120916',NULL,1,1),(102,1,'2020-05-01 01:01:09','2020-05-01 01:01:09',1,1,'今天','1,2,3,4',0,0,0),(103,1,'2023-02-01 10:11:27','2023-02-01 10:11:27',100,100,'洒水车考虑','1,2,3',NULL,NULL,NULL),(104,NULL,NULL,NULL,100,100,'洒水车考虑一下','1,2,3',NULL,NULL,NULL),(105,NULL,NULL,NULL,100,100,'洒水车考虑er下','1,2,3',NULL,NULL,NULL);
 
 /*Table structure for table `relationship` */
 
@@ -342,11 +344,11 @@ CREATE TABLE `topic` (
   `visited_count` bigint unsigned DEFAULT NULL,
   `follow_count` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`topic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `topic` */
 
-insert  into `topic`(`topic_id`,`name`,`description`,`author_id`,`gmt_create`,`visited_count`,`follow_count`) values (1,'杀杀杀2','2121e',1,'2022-12-27 15:05:01',1,2),(2,'222','11112',1,'2023-01-06 15:05:06',1,2),(3,'1112','22322',1,'2023-01-06 15:05:08',2,2);
+insert  into `topic`(`topic_id`,`name`,`description`,`author_id`,`gmt_create`,`visited_count`,`follow_count`) values (1,'杀杀杀2','2121e',1,'2022-12-27 15:05:01',1,2),(2,'222','11112',1,'2023-01-06 15:05:06',1,2),(3,'1112','22322',1,'2023-01-06 15:05:08',2,2),(4,'时代参加','啧啧111啧',1,'2023-02-01 10:32:28',NULL,NULL),(5,'时代就开始参加',NULL,1,'2023-02-01 10:32:49',NULL,NULL),(6,'时代就开始参加','啧啧111啧',1,'2023-02-01 10:34:12',NULL,NULL);
 
 /*Table structure for table `topicship` */
 
