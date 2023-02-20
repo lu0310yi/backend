@@ -38,4 +38,12 @@ public interface AttractionService {
     void follow(Long attractionId, char type);
 
     void unfollow(Long attractionId);
+
+    PageInfo<Attraction> findAttractions(Integer pagesize, Integer pagenum, String name, String location, String description);
+
+    Boolean batchDelete(Long[] ids);
+
+    Boolean delete(Long attractionId);
+
+    Boolean saveAttraction(Attraction attraction);
 }

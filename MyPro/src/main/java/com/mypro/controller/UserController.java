@@ -119,7 +119,6 @@ public class UserController {
         return userService.getInfoById(userId);
     }
     @PostMapping("/user/auth/update")
-  
 //    @RequestParam("nickname")String nickname,
 //    @RequestParam("password")String password,
 //    @RequestParam("gender")String gender,
@@ -195,8 +194,6 @@ public class UserController {
     public List<Topic> getHostTopics(@PathVariable("userId")Long userId){
         return topicService.getHostTopicsByUserId(userId);
     }
-
-
     @PostMapping("/user/operation/follow/{userId}")
     public void follow(@PathVariable("userId")Long userId){
         userService.follow(userId);

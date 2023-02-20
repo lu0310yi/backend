@@ -13,6 +13,7 @@ import com.mypro.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -192,6 +193,50 @@ public class AttractionServiceImpl implements AttractionService {
         if(attractionShipList.size()>0){
             attractionShipMapper.deleteByExample(attractionShipExample);
         }
+    }
+
+    @Override
+    public PageInfo<Attraction> findAttractions(Integer pagesize, Integer pagenum, String name, String location, String description) {
+        AttractionExample attractionExample = new AttractionExample();
+        AttractionExample.Criteria criteria = attractionExample.createCriteria();
+        if(name!=null&&!"".equals(name)&&!"null".equals(name)){
+            criteria.andNameLike('%'+name+'%');
+        }
+        if(location!=null&&!"".equals(location)&&!"null".equals(location)){
+            criteria.andLocationLike('%'+location+'%');
+        }
+        if(description!=null&&!"".equals(description)&&!"null".equals(name)){
+            criteria.andDescriptionLike('%'+description+'%');
+        }
+        PageHelper.startPage(pagenum,pagesize);
+        List<Attraction> list = attractionMapper.selectByExample(attractionExample);
+        return new PageInfo<Attraction>(list,1);
+    }
+
+    @Override
+    public Boolean batchDelete(Long[] ids) {
+        AttractionExample attractionExample = new AttractionExample();
+        attractionExample.createCriteria().andAttractionIdIn(Arrays.asList(ids));
+        if(attractionMapper.deleteByExample(attractionExample)>0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean delete(Long attractionId) {
+        if ( attractionMapper.deleteByPrimaryKey(attractionId)!=0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean saveAttraction(Attraction attraction) {
+        if(attractionMapper.insert(attraction)!=0) {
+            return true;
+        }
+        return true;
     }
 
 }

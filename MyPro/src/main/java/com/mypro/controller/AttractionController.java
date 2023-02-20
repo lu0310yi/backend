@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.mypro.beans.Article;
 import com.mypro.beans.Attraction;
 import com.mypro.beans.Post;
+import com.mypro.beans.User;
 import com.mypro.service.AttractionService;
 import com.mypro.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,33 @@ import java.util.List;
 public class AttractionController {
     @Autowired
     AttractionService attractionService;
+//    @GetMapping("/attraction/list/find")
+//    public PageInfo<Attraction> findAttraction(@RequestParam("key")String key,
+//                                               @RequestParam("filter")Integer filter,
+//                                               @RequestParam("order")String order,
+//                                               @RequestParam("pagesize")Integer pagesize,
+//                                               @RequestParam("pagenum")Integer pagenum){
+//        return attractionService.findAttractionsByKey(key,filter,order,pagesize,pagenum);
+//    }
     @GetMapping("/attraction/list/find")
-    public PageInfo<Attraction> findAttraction(@RequestParam("key")String key,
-                                               @RequestParam("filter")Integer filter,
-                                               @RequestParam("order")String order,
-                                               @RequestParam("pagesize")Integer pagesize,
-                                               @RequestParam("pagenum")Integer pagenum){
-        return attractionService.findAttractionsByKey(key,filter,order,pagesize,pagenum);
+    public PageInfo<Attraction> findAttraction(@RequestParam("pageSize")Integer pageSize,
+                                               @RequestParam("pageNum")Integer pageNum,
+                                               @RequestParam("name")String name,
+                                               @RequestParam("location")String location,
+                                               @RequestParam("description")String description){
+        return attractionService.findAttractions(pageSize,pageNum,name,location,description);
+    }
+    @PostMapping("attraction/batchDelete/{attractionIds}")
+    public Boolean batchDelete(@PathVariable("attractionIds") Long[] ids){
+        return attractionService.batchDelete(ids);
+    }
+    @DeleteMapping("attraction/delete/{attractionId}")
+    public Boolean delete(@PathVariable("attractionId")Long attractionId){
+        return attractionService.delete(attractionId);
+    }
+    @PostMapping("/attraction/save")
+    public Boolean save(@RequestBody Attraction attraction){
+        return attractionService.saveAttraction(attraction);
     }
 
     @GetMapping("/attraction/list/recommend/{pageSize}/{pageNum}")

@@ -17,6 +17,10 @@ last_login_ipv6 VARCHAR(39)
 )
 
 
-INSERT INTO `user` VALUES(
-1,'lili','asdfg15946',`user`
+INSERT INTO `user` (PASSWORD,mobile,gmt_sign_up) VALUES('12345678999','12345678999',NOW())
 
+SELECT COUNT(0) FROM USER WHERE (nickname LIKE '')
+
+
+
+SELECT * FROM USER WHERE mobile=1555555 AND PASSWORD=1255

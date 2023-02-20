@@ -1,8 +1,5 @@
 <template>
 <div>
-
-
-
   <div style="margin: 10px 0">
     <el-input style="width: 200px;margin-right: 5px" placeholder="请输入昵称" v-model="nickname" suffix-icon="el-icon-search"></el-input>
     <el-input style="width: 200px;margin-right: 5px" placeholder="请输入手机号" v-model="mobile" suffix-icon="el-icon-search"></el-input>
@@ -26,7 +23,7 @@
   </div>
   <el-table :data="tableData" border stripe header-cell-class-name="headBg" @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column prop="userid" label="userid" width="140"></el-table-column>
+    <el-table-column prop="userId" label="userId" width="140"></el-table-column>
     <el-table-column prop="nickname" label="昵称" width="120"></el-table-column>
     <el-table-column prop="password" label="密码" width="120"></el-table-column>
     <el-table-column prop="gender" label="性别" width="120"></el-table-column>
@@ -42,7 +39,7 @@
             icon="el-icon-info"
             icon-color="red"
             title="这是一段内容确定删除吗？"
-            @confirm="handleDelete(scope.row.userid)"
+            @confirm="handleDelete(scope.row.userId)"
         >
           <el-button type="danger" slot="reference">删除<i class="el-icon-delete"></i></el-button>
         </el-popconfirm>
@@ -63,7 +60,6 @@
     <!--            :current-page="currentPage4"-->
 
   </el-pagination>
-
 
   <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
     <el-form :model="form" label-width="80px">
@@ -135,10 +131,10 @@ export default {
           signature: this.signature
         }
       }).then(res =>{
-        console.log(res)
-        console.log(this.nickname)
-        console.log(this.mobile)
-        console.log(this.signature)
+        // console.log(res)
+        // console.log(this.nickname)
+        // console.log(this.mobile)
+        // console.log(this.signature)
         if(res.data!=null) {
           this.tableData = res.data.list
           this.total = res.data.total
@@ -149,7 +145,7 @@ export default {
       this.multipleSelection = val;
     },
     handleBatchDelete(){
-      let ids = this.multipleSelection.map(v => v.userid)
+      let ids = this.multipleSelection.map(v => v.userId)
       console.log(ids)
       request.post("/user/batchDelete?ids="+ids).then(
           res=> {
@@ -169,7 +165,7 @@ export default {
     },
     handleDelete(id){
       request.delete("/user/delete",{
-        userid: id
+        userId: id
       }).then(res=>{
         if(res){
           this.$message.success("删除成功")

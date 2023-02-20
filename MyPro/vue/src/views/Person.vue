@@ -38,9 +38,12 @@ export default {
     }
   },
   created(){
-
-    this.request.get("/user/auth/info"+this.user.userName).then(res=> {
-      if (res.code === '200') {
+    // console.log("=======");
+    // let user = localStorage.getItem('user')?JSON.parse(localStorage.getItem('user')):{};
+    // console.log(this.user);
+    this.request.get("/user/auth/info/"+this.user.userId).then(res=> {
+      if (res.code == '200') {
+        console.log(res.data);
       this.form = res.data;
       }
     })

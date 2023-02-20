@@ -20,7 +20,7 @@
     <el-submenu index="2">
       <template slot="title"><i class="el-icon-menu"></i>系统管理</template>
         <el-menu-item index="/user"><i class="el-icon-s-custom"></i>用户管理</el-menu-item>
-        <el-menu-item index="3-2"><i class="el-icon-s-home"></i>景区管理</el-menu-item>
+        <el-menu-item index="/attraction"><i class="el-icon-s-home"></i>景区管理</el-menu-item>
     </el-submenu>
     <el-submenu index="3">
       <template slot="title"><i class="el-icon-setting"></i>导航三</template>

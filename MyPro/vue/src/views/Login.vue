@@ -24,7 +24,6 @@ export default {
   data(){
     return {
       user:{},
-
       rules: {
         mobile: [
           {required: true, message: '请输入手机号', trigger: 'blur'},
@@ -53,7 +52,7 @@ export default {
             }
           })
         }
-        console.log(this.request.get("/setting/info/1"))
+        // console.log(this.request.get("/setting/info/1"))
       });
     }
   }

@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO loginServ(UserDTO userDTO) {
         String mobile = userDTO.getMobile();
         String password = userDTO.getPassword();
-        System.out.println(password);
         if(StringUtils.isNullOrEmpty(mobile)||StringUtils.isNullOrEmpty((password))) {
             return null;
         }
@@ -55,6 +54,7 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(user,userDTO);
             String token = TokenUtil.getToken(user.getUserId().toString(),user.getPassword());
             userDTO.setToken(token);
+            System.out.println(userDTO.getUserId());
             return userDTO;
         }else{
             throw new ServiceException(ReturnCode.RC500.getCode(),"手机号或者密码错误");
@@ -180,7 +180,6 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> findUsers(Integer pagesize, Integer pagenum, String nickname, String mobile, String signature) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        System.out.println(nickname);
         if(nickname!=null&&!"".equals(nickname)&&!"null".equals(nickname)){
             criteria.andNicknameLike('%'+nickname+'%');
         }
