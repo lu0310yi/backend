@@ -50,8 +50,9 @@ export default {
   },
   methods: {
     saveUser(){
-      this.request.post("http://localhost:8081/user/save"+this.form).then(
+      this.request.post("/user/save"+this.form).then(
           res=>{
+            console.log(res)
             if(res){
               this.$message.success("新增成功")
               this.dialogFormVisible = false

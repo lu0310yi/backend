@@ -31,4 +31,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    List selectByKey(String key, Integer filter, String order);
+
+//    List selectByKeyFilter(String key, Integer filter, String order);
 }

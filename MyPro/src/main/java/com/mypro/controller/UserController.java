@@ -9,14 +9,17 @@ import com.mypro.service.*;
 
 import com.mypro.utils.TokenUtil;
 import com.mysql.cj.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Array;
 import java.util.List;
-
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class UserController {
     @Autowired
@@ -31,9 +34,6 @@ public class UserController {
     ArticleService articleService;
     @Autowired
     FavoritesService favoritesService;
-
-
-
     // 登录
 //    @ApiOperation(value = "登陆", notes = "登陆")
 //    @RequestMapping(value = "/login" ,method = RequestMethod.GET)
@@ -86,23 +86,36 @@ public class UserController {
     }
     @PostMapping("/user/save")
     public Boolean save(@RequestBody User user){
+//        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//        HttpServletResponse response = servletRequestAttributes.getResponse();
+////        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.addHeader("Access-Control-Allow-Origin", "*");
         return userService.saveUser(user);
     }
-    @DeleteMapping("user/delete/{userId}")
+    @DeleteMapping("/user/delete/{userId}")
     public Boolean delete(@PathVariable("userId")Long userId){
         return userService.delete(userId);
     }
-    @PostMapping("user/batchDelete/{userIds}")
+    @PostMapping("/user/batchDelete/{userIds}")
     public Boolean batchDelete(@PathVariable("userIds") Long[] ids){
         return userService.batchDelete(ids);
     }
-    @GetMapping("/user/list/find")
+    @GetMapping("/user/list/findUser")
     public PageInfo<User> findUser(@RequestParam("pageSize")Integer pageSize,
                                    @RequestParam("pageNum")Integer pageNum,
                                    @RequestParam("nickname")String nickname,
                                    @RequestParam("mobile")String mobile,
                                    @RequestParam("signature")String signature){
         return userService.findUsers(pageSize,pageNum,nickname,mobile,signature);
+    }
+    @GetMapping("/user/list/find")
+    public PageInfo<User> find(@RequestParam("key")String key,
+                               @RequestParam("filter")Integer filter,
+                               @RequestParam("order")String order,
+                               @RequestParam("pagesize")Integer pagesize,
+                               @RequestParam("pagenum")Integer pagenum){
+        return userService.findUserByKey(key,filter,order,pagesize,pagenum);
+
     }
 
     @PostMapping("/user/auth/logout")

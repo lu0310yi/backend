@@ -98,7 +98,7 @@
     select
     <include refid="Base_Column_List" />
     from attraction
-    where attraction_id = ${attractionId,jdbcType=BIGINT}
+    where attraction_id = #{attractionId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from attraction
@@ -226,11 +226,11 @@
     </foreach>
   </select>
   <select id="selectByKey" resultType="com.mypro.beans.Attraction">
-    select * from attraction  where name like #{key} or location like '%' #{key} '%'
+    select * from attraction  where name like '%' #{key} '%' or location like '%' #{key} '%'
     or `description` like '%' #{key} '%'
     order by
     <choose>
-         <when test="filter=0">nickname</when>
+         <when test="filter=0">name</when>
          <when test="filter=1">
             (SELECT COUNT(*) FROM attractionship WHERE attraction_id=attraction.`attraction_id`)
          </when>

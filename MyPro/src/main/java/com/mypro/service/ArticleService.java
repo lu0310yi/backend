@@ -1,6 +1,7 @@
 package com.mypro.service;
 
 
+import com.github.pagehelper.PageInfo;
 import com.mypro.beans.Article;
 import com.mypro.beans.Collection;
 import com.mypro.beans.Comment;
@@ -31,4 +32,12 @@ public interface ArticleService {
     Boolean isthumbup(Long articleId);
 
     List<Collection> iscollect(Long articleId);
+
+    PageInfo<Article> findArticleByKey(String key, Integer filter, String order, Integer pagesize, Integer pagenum);
+
+    PageInfo<Article> recommend(Integer pageNum, Integer pageSize);
+
+    void uncollect(Collection collection);
+
+    void unthumbup(Long articleId);
 }

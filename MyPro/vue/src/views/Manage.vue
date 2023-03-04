@@ -4,7 +4,6 @@
       <el-aside :width="sideWith+'px'" style="background-color: rgb(238, 241, 246); min-height: 100%">
       <Aside :isCollapsed="isCollapsed" :logoTextShow="logoTextShow"/>
       </el-aside>
-
       <el-container>
         <el-header  >
         <Header :collapse="collapse" :collapseBtnClass="collapseBtnClass"/>
@@ -12,7 +11,6 @@
         <el-main>
          <router-view/>
         </el-main>
-
       </el-container>
     </el-container>
   </div>

@@ -207,6 +207,20 @@
            content, comment_count,
            collection_count, thumbup_count from post where author_id=#{userId}
   </select>
+    <select id="selectByKey" resultType="com.mypro.beans.Post">
+      select * from post where content like CONCAT('%',#{key},'%')
+      order by
+      <choose>
+        <when test="filter==0"> post_id</when>
+        <when test="filter==1">thumbup_count</when>
+        <when test="filter==2">collection_count</when>
+        <when test="filter==3">comment_count</when>
+      </choose>
+      ${order}
+    </select>
+  <select id="selectByRecommend" resultType="com.mypro.beans.Post">
+    select * from post order by thumbup_count desc
+  </select>
   <update id="updateByExampleSelective" parameterType="map" >
     update post
     <set >

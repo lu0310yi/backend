@@ -1,5 +1,7 @@
 package com.mypro.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.mypro.beans.Article;
 import com.mypro.beans.Collection;
 import com.mypro.beans.Comment;
 import com.mypro.beans.Post;
@@ -27,12 +29,20 @@ public class PostController {
     void collect(@RequestBody Collection collection){
         postService.collect(collection);
     }
+    @PostMapping("/post/operation/uncollect")
+    void uncollect(@RequestBody Collection collection){
+        postService.uncollect(collection);
+    }
     @PostMapping("/post/operation/thumbup/{postId}")
-    void collect(@PathVariable("postId")Long postId){
+    void thumbup(@PathVariable("postId")Long postId){
         postService.thumbup(postId);
     }
+    @PostMapping("/post/operation/unthumbup/{postId}")
+    void unthumbup(@PathVariable("postId")Long postId){
+        postService.unthumbup(postId);
+    }
     @PostMapping("/post/operation/comment")
-    void collect(@RequestBody Comment comment){
+    void comment(@RequestBody Comment comment){
         postService.comment(comment);
     }
     @PostMapping("/post/creation/publish")
@@ -55,5 +65,19 @@ public class PostController {
     @GetMapping("/post/profile/iscollect/{postId}")
     public List<Collection> iscollect(@PathVariable("postId")Long postId){
         return postService.iscollect(postId);
+    }
+    @GetMapping("/post/list/find")
+    public PageInfo<Post> find(@RequestParam("key")String key,
+                                  @RequestParam("filter")Integer filter,
+                                  @RequestParam("order")String order,
+                                  @RequestParam("pageSize")Integer pageSize,
+                                  @RequestParam("pageNum")Integer pageNum){
+        return postService.findPostByKey(key,filter,order,pageSize,pageNum);
+
+    }
+    @GetMapping("/post/list/recommend/{pageSize}/{pageNum}")
+    public PageInfo<Post> recommend(@PathVariable("pageSize")Integer pageSize,
+                                       @PathVariable("pageNum")Integer pageNum){
+        return postService.recommend(pageNum,pageSize);
     }
 }

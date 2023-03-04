@@ -14,4 +14,6 @@ public interface CommentService {
     void reply(Comment comment);
 
     void delete(Long commentId);
+
+    void unthumbup(Long commentId);
 }

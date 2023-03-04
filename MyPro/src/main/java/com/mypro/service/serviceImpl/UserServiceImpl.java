@@ -15,6 +15,7 @@ import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -196,10 +197,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean saveUser(User user) {
-        if(userMapper.insert(user)!=0) {
+        System.out.println("=============="+user.getUserId());
+        if(userMapper.selectByPrimaryKey(user.getUserId())!=null){
+            userMapper.updateByPrimaryKeySelective(user);
             return true;
         }
-        return true;
+        user.setGmtSignUp(new Date());
+        if(userMapper.insertSelective(user)!=0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -259,6 +266,15 @@ public class UserServiceImpl implements UserService {
     public void block(Long userId) {
         updateRelation(userId,"2");
     }
+
+    @Override
+    @Transactional
+    public PageInfo<User> findUserByKey(String key, Integer filter, String order, Integer pagesize, Integer pagenum) {
+        PageHelper.startPage(pagenum,pagesize);
+        List list = userMapper.selectByKey(key,filter,order);
+        return new PageInfo<User>(list,1);
+    }
+
     public void updateRelation(Long userId,String status){
         User currentUser = TokenUtil.getUser();
         if(currentUser.getUserId()==userId){

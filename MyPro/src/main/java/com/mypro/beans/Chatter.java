@@ -1,7 +1,11 @@
 package com.mypro.beans;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+@Data
+@NoArgsConstructor
 public class Chatter implements Serializable {
     private Long subjectId;
 

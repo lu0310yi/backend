@@ -2,10 +2,7 @@ package com.mypro.service.serviceImpl;
 
 import com.mypro.beans.*;
 import com.mypro.exception.ServiceException;
-import com.mypro.mapper.ArticleMapper;
-import com.mypro.mapper.FavoritesMapper;
-import com.mypro.mapper.PacShipMapper;
-import com.mypro.mapper.SettingMapper;
+import com.mypro.mapper.*;
 import com.mypro.resultHandle.ReturnCode;
 import com.mypro.service.FavoritesService;
 import com.mypro.service.SettingService;
@@ -15,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -31,6 +30,8 @@ public class FavoritesServiceImpl implements FavoritesService {
     SettingService settingService;
     @Autowired
     UserService userService;
+    @Autowired
+    FavoritesShipMapper favoritesShipMapper;
     @Override
     public List<Favorites> getFavorites(Long userId) {
         FavoritesExample favoritesExample = new FavoritesExample();
@@ -67,28 +68,59 @@ public class FavoritesServiceImpl implements FavoritesService {
     }
 
     @Override
-    public List<Article> getItems(Long favoritesId) {
+    public HashMap<String,List<Long>> getItems(Long favoritesId) {
         PacShipExample pacShipExample = new PacShipExample();
         pacShipExample.createCriteria().andFavoritesIdEqualTo(favoritesId);
         List<PacShip> list =  pacShipMapper.selectByExample(pacShipExample);
-        List pacIdList = new ArrayList();
+        List articleIdList = new ArrayList();
+        List postIdList = new ArrayList();
         for(PacShip  pacship : list){
-            pacIdList.add(pacship.getPacId());
+            if("0".equals(pacship.getPacType())) {
+                postIdList.add(pacship.getPacId());
+            }else if("1".equals(pacship.getPacType())){
+                articleIdList.add(pacship.getPacId());
+            }
         }
-        ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andAttractionIdIn(pacIdList);
-        return articleMapper.selectByExample(articleExample);
+        HashMap<String,List<Long>> map  =new HashMap<>();
+        map.put("articleIdList",articleIdList);
+        map.put("postIdList",postIdList);
+        return map;
     }
 
     @Override
     public void collect(Long favoritesId) {
-
-//        favoritesMapper.insert()
+        Long userId = TokenUtil.getUserId();
+        FavoritesShip favoritesShip = new FavoritesShip();
+        favoritesShip.setFavoritesId(favoritesId);
+        favoritesShip.setUserId(userId);
+        favoritesShip.setGmtOperation(new Date());
+        favoritesShip.setType("2");
+        FavoritesShipExample favoritesShipExample = new FavoritesShipExample();
+        favoritesShipExample.createCriteria().andFavoritesIdEqualTo(favoritesId).
+                andUserIdEqualTo(userId).andTypeEqualTo("2");
+        List favoritesShipList  = favoritesShipMapper.selectByExample(favoritesShipExample);
+        if(favoritesShipList.size()>0){
+            throw new ServiceException(ReturnCode.RC500.getCode(),"您已收藏该内容" );
+        }
+        favoritesShipMapper.insert(favoritesShip);
     }
 
     @Override
     public void thumbup(Long favoritesId) {
-
+        Long userId = TokenUtil.getUserId();
+        FavoritesShip favoritesShip = new FavoritesShip();
+        favoritesShip.setFavoritesId(favoritesId);
+        favoritesShip.setUserId(userId);
+        favoritesShip.setGmtOperation(new Date());
+        favoritesShip.setType("1");
+        FavoritesShipExample favoritesShipExample = new FavoritesShipExample();
+        favoritesShipExample.createCriteria().andFavoritesIdEqualTo(favoritesId).
+                andUserIdEqualTo(userId).andTypeEqualTo("1");
+        List favoritesShipList  = favoritesShipMapper.selectByExample(favoritesShipExample);
+        if(favoritesShipList.size()>0){
+            throw new ServiceException(ReturnCode.RC500.getCode(),"您已点赞该内容" );
+        }
+        favoritesShipMapper.insert(favoritesShip);
     }
 
     @Override

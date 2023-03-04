@@ -17,15 +17,15 @@ import java.util.List;
 public class AttractionController {
     @Autowired
     AttractionService attractionService;
-//    @GetMapping("/attraction/list/find")
-//    public PageInfo<Attraction> findAttraction(@RequestParam("key")String key,
-//                                               @RequestParam("filter")Integer filter,
-//                                               @RequestParam("order")String order,
-//                                               @RequestParam("pagesize")Integer pagesize,
-//                                               @RequestParam("pagenum")Integer pagenum){
-//        return attractionService.findAttractionsByKey(key,filter,order,pagesize,pagenum);
-//    }
     @GetMapping("/attraction/list/find")
+    public PageInfo<Attraction> find(@RequestParam("key")String key,
+                                               @RequestParam("filter")Integer filter,
+                                               @RequestParam("order")String order,
+                                               @RequestParam("pagesize")Integer pagesize,
+                                               @RequestParam("pagenum")Integer pagenum){
+        return attractionService.findAttractionsByKey(key,filter,order,pagesize,pagenum);
+    }
+    @GetMapping("/attraction/list/findAttraction")
     public PageInfo<Attraction> findAttraction(@RequestParam("pageSize")Integer pageSize,
                                                @RequestParam("pageNum")Integer pageNum,
                                                @RequestParam("name")String name,
@@ -33,11 +33,11 @@ public class AttractionController {
                                                @RequestParam("description")String description){
         return attractionService.findAttractions(pageSize,pageNum,name,location,description);
     }
-    @PostMapping("attraction/batchDelete/{attractionIds}")
+    @PostMapping("/attraction/batchDelete/{attractionIds}")
     public Boolean batchDelete(@PathVariable("attractionIds") Long[] ids){
         return attractionService.batchDelete(ids);
     }
-    @DeleteMapping("attraction/delete/{attractionId}")
+    @DeleteMapping("/attraction/delete/{attractionId}")
     public Boolean delete(@PathVariable("attractionId")Long attractionId){
         return attractionService.delete(attractionId);
     }

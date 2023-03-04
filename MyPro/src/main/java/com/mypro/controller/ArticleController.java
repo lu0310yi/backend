@@ -1,8 +1,7 @@
 package com.mypro.controller;
 
-import com.mypro.beans.Article;
-import com.mypro.beans.Collection;
-import com.mypro.beans.Comment;
+import com.github.pagehelper.PageInfo;
+import com.mypro.beans.*;
 import com.mypro.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +25,17 @@ public class ArticleController {
     void collect(@RequestBody Collection collection){
         articleService.collect(collection);
     }
+    @PostMapping("/article/operation/uncollect")
+    void uncollect(@RequestBody Collection collection){
+        articleService.uncollect(collection);
+    }
     @PostMapping("/article/operation/thumbup/{articleId}")
     void thumbup(@PathVariable("articleId")Long articleId){
         articleService.thumbup(articleId);
+    }
+    @PostMapping("/article/operation/unthumbup/{articleId}")
+    void unthumbup(@PathVariable("articleId")Long articleId){
+        articleService.unthumbup(articleId);
     }
     @PostMapping("/article/operation/comment")
     void comment(@RequestBody Comment comment){
@@ -54,4 +61,20 @@ public class ArticleController {
     public List<Collection> iscollect(@PathVariable("articleId")Long articleId){
         return articleService.iscollect(articleId);
     }
+    @GetMapping("/article/list/find")
+    public PageInfo<Article> find(@RequestParam("key")String key,
+                               @RequestParam("filter")Integer filter,
+                               @RequestParam("order")String order,
+                               @RequestParam("pageSize")Integer pageSize,
+                               @RequestParam("pageNum")Integer pageNum){
+        return articleService.findArticleByKey(key,filter,order,pageSize,pageNum);
+
+    }
+    @GetMapping("/article/list/recommend/{pageSize}/{pageNum}")
+    public PageInfo<Article> recommend(@PathVariable("pageSize")Integer pageSize,
+                                          @PathVariable("pageNum")Integer pageNum){
+        return articleService.recommend(pageNum,pageSize);
+    }
+
+
 }

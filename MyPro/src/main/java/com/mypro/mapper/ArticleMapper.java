@@ -34,4 +34,8 @@ public interface ArticleMapper {
     int updateByPrimaryKeyWithBLOBs(Article record);
 
     int updateByPrimaryKey(Article record);
+
+    List selectByKey(String key, Integer filter, String order);
+
+    List selectByRecommend();
 }

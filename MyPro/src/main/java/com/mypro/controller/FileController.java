@@ -12,10 +12,12 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -25,10 +27,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/file")
 public class FileController {
+
     @Value("${files.upload.path}")
     private String fileUploadPath;
+//    private String fileUploadPath = ResourceUtils.getURL("classpath:").getPath()+"files/";
     @Autowired
     FilesMapper filesMapper;
+
+    public FileController() throws FileNotFoundException {
+    }
 
     /**
      * 文件上传接口
@@ -49,19 +56,17 @@ public class FileController {
         String fileUUID = uuid+ StrUtil.DOT+type;
         File uploadFile = new File(fileUploadPath+fileUUID);
         file.transferTo(uploadFile);
-
-
-        String url=new String();
+        String url;
         String md5 = SecureUtil.md5(uploadFile);
 
         Files files = getFilesByMD5(md5);
         if(files==null) {
-            url = "http://localhost:8081/file/"+fileUUID;
+            url = "/file/"+fileUUID;
+//            url = fileUploadPath+fileUUID;
         }else{
             url = files.getUrl();
             uploadFile.delete();
         }
-
         Files saveFile = new Files();
         saveFile.setFileName(name);
         saveFile.setType(type);
@@ -78,7 +83,6 @@ public class FileController {
         ServletOutputStream os = response.getOutputStream();
         response.addHeader("Content-Disposition","attachment;filename="+ URLEncoder.encode(fileUUID,"UTF-8"));
         response.setContentType("application/octet-stream");
-
         os.write(FileUtil.readBytes(file));
         os.flush();
         os.close();

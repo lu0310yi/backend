@@ -1,5 +1,6 @@
 package com.mypro.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mypro.beans.Collection;
 import com.mypro.beans.Comment;
 import com.mypro.beans.Post;
@@ -30,4 +31,12 @@ public interface PostService {
     Boolean isthumbup(Long postId);
 
     List<Collection> iscollect(Long postId);
+
+    PageInfo<Post> findPostByKey(String key, Integer filter, String order, Integer pageSize, Integer pageNum);
+
+    PageInfo<Post> recommend(Integer pageNum, Integer pageSize);
+
+    void uncollect(Collection collection);
+
+    void unthumbup(Long postId);
 }

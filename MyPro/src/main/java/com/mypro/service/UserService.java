@@ -46,4 +46,6 @@ public interface UserService {
     void unfollow(Long userId);
 
     void block(Long userId);
+
+    PageInfo<User> findUserByKey(String key, Integer filter, String order, Integer pagesize, Integer pagenum);
 }

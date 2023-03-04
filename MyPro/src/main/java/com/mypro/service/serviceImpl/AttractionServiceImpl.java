@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -116,7 +117,6 @@ public class AttractionServiceImpl implements AttractionService {
     public PageInfo<Attraction> recommend(Integer pagenum, Integer pagesize) {
         PageHelper.startPage(pagenum,pagesize);
         List list = attractionMapper.selectByRecommend();
-
         return new PageInfo<Attraction>(list,1);
     }
 
@@ -233,10 +233,16 @@ public class AttractionServiceImpl implements AttractionService {
 
     @Override
     public Boolean saveAttraction(Attraction attraction) {
-        if(attractionMapper.insert(attraction)!=0) {
+        System.out.println("=========="+attraction.getAttractionId());
+        if(attractionMapper.selectByPrimaryKey(attraction.getAttractionId())!=null){
+            attractionMapper.updateByPrimaryKeySelective(attraction);
             return true;
         }
-        return true;
+        attraction.setGmtCreate(new Date());
+        if(attractionMapper.insertSelective(attraction)!=0) {
+            return true;
+        }
+        return false;
     }
 
 }

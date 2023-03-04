@@ -5,6 +5,7 @@ import com.mypro.beans.Favorites;
 import com.mypro.beans.Post;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -14,7 +15,7 @@ public interface FavoritesService {
 
     Favorites info(Long favoritesId);
 
-    List<Article> getItems(Long favoritesId);
+    HashMap<String,List<Long>> getItems(Long favoritesId);
 
     void collect(Long favoritesId);
 

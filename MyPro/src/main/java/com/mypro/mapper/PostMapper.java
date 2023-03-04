@@ -27,4 +27,8 @@ public interface PostMapper {
     int updateByPrimaryKeySelective(Post record);
 
     int updateByPrimaryKey(Post record);
+
+    List selectByKey(String key, Integer filter, String order);
+
+    List selectByRecommend();
 }

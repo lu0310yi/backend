@@ -16,6 +16,7 @@ spring:
   web:
     resources:
       static-locations: file:D:\desktop\program\GithubPro\files
+#      static-locations: file:classpath:files
 
 #file:
 #    staticAccessPath: file/**
@@ -39,6 +40,8 @@ pagehelper:
 files:
   upload:
     path: D:\DeskTop\program\GithubPro\files\
+#    path: classpath:files\
 sonImgPath: /file/
 absoluteImgPath: D:\DeskTop\program\GithubPro\files\
+#absoluteImgPath: classpath:files\
 

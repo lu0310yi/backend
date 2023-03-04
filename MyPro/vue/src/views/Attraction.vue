@@ -55,24 +55,44 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
     </el-pagination>
-    <el-dialog title="新增景点" :visible.sync="dialogFormVisible">
-      <el-form :model="form" label-width="80px">
+    <el-dialog title="新增景点" :visible.sync="dialogAddFormVisible">
+      <el-form :model="addForm" label-width="80px">
         <el-form-item label="名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="addForm.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="地址">
-          <el-input v-model="form.location" autocomplete="off"></el-input>
+          <el-input v-model="addForm.location" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="form.description" autocomplete="off"></el-input>
+          <el-input v-model="addForm.description" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="封面">
-          <el-input v-model="form.cover" autocomplete="off"></el-input>
+          <el-input v-model="addForm.cover" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveAttraction" >确 定</el-button>
+        <el-button @click="dialogAddFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addAttraction" >确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="编辑景点" :visible.sync="dialogEditFormVisible">
+      <el-form :model="editForm" label-width="80px">
+        <el-form-item label="名称">
+          <el-input v-model="editForm.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input v-model="editForm.location" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="editForm.description" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="封面">
+          <el-input v-model="editForm.cover" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogEditFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editAttraction" >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -92,11 +112,13 @@ export default {
       description: '',
       location: '',
       cover: '',
-      dialogFormVisible: false,
-      form: {},
+      dialogEditFormVisible: false,
+      dialogAddFormVisible: false,
+      editForm: {},
+      addForm: {},
       multipleSelection: [],
       ids: [],
-      headBg: 'headBg'
+      headBg: 'headBg',
     }
   },
   created() {
@@ -104,7 +126,7 @@ export default {
   },
   methods: {
     load() {
-      request.get("http://localhost:8081/attraction/list/find", {
+      request.get("http://localhost:8081/attraction/list/findAttraction", {
         params: {
           pageSize: this.pageSize,
           pageNum: this.pageNum,
@@ -124,7 +146,7 @@ export default {
     },
     handleBatchDelete(){
       let ids = this.multipleSelection.map(v => v.userId)
-      request.post("/attraction/batchDelete?ids="+ids).then(
+      request.post("/attraction/batchDelete/"+ids).then(
           res=> {
             if (res) {
               this.$message.success("删除成功")
@@ -137,13 +159,11 @@ export default {
       )
     },
     handleEdit(row){
-      this.form=row
-      this.dialogFormVisible=true
+      this.editForm=row
+      this.dialogEditFormVisible=true
     },
     handleDelete(id){
-      request.delete("/attraction/delete",{
-        userId: id
-      }).then(res=>{
+      request.delete("/attraction/delete/"+id).then(res=>{
         if(res){
           this.$message.success("删除成功")
           this.dialogFormVisible = false
@@ -153,19 +173,31 @@ export default {
       })
     },
     handleAdd(){
-      this.dialogFormVisible = true
+      this.dialogAddFormVisible = true
     },
     searchAttraction(){
       this.load()
     },
-    saveAttraction(){
-      request.post("/attraction/save"+this.form).then(
+    addAttraction(){
+      request.post("/attraction/save",this.addForm).then(
           res=>{
             if(res){
               this.$message.success("新增成功")
-              this.dialogFormVisible = false
+              this.dialogAddFormVisible = false
             }else{
-              this.$message.error("新增失败")
+              this.$message.error('新增失败')
+            }
+          }
+      )
+    },
+    editAttraction(){
+      request.post("/attraction/save",this.editForm).then(
+          res=>{
+            if(res){
+              this.$message.success("修改成功")
+              this.dialogEditFormVisible = false
+            }else{
+              this.$message.error('修改失败')
             }
           }
       )

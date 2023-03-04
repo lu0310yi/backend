@@ -232,6 +232,20 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+    <select id="selectByKey" resultType="com.mypro.beans.Article">
+        select * from article where title like CONCAT('%',#{key},'%') or content like CONCAT('%',#{key},'%')
+        order by
+        <choose>
+          <when test="filter==0"> article_id</when>
+          <when test="filter==1">thumbup_count</when>
+          <when test="filter==2">collection_count</when>
+          <when test="filter==3">comment_count</when>
+        </choose>
+        ${order}
+    </select>
+  <select id="selectByRecommend" resultType="com.mypro.beans.Article">
+    select * from article order by thumbup_count desc
+  </select>
   <update id="updateByExampleSelective" parameterType="map" >
     update article
     <set >

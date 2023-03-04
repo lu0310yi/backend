@@ -221,11 +221,28 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+
+  <select id="selectByKey" resultType="com.mypro.beans.User">
+    select * from user where nickname like CONCAT('%',#{key},'%') or signature like CONCAT('%',#{key},'%')
+    order by
+        <choose>
+          <when test="filter==0"> user_id</when>
+          <when test="filter==1">(select count(*) from relationship where object_id = user.user_id and status in(0,1))</when>
+        </choose>
+    ${order}
+  </select>
+
   <select id="selectByMobileAndPassword" resultType="com.mypro.beans.User">
     select * from user where mobile=#{mobile,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
   </select>
+  <select id="selectByKeyFilter" resultType="com.mypro.beans.User">
+    SELECT * FROM USER WHERE nickname LIKE'%我%' OR signature LIKE '%我%'
+ORDER BY (SELECT COUNT(*) FROM relationship WHERE object_id = user.user_id AND STATUS IN(0,1)) ASC
+  </select>
 
-    <update id="updateByExampleSelective" parameterType="map" >
+
+  <update id="updateByExampleSelective" parameterType="map" >
     update user
     <set >
       <if test="record.userId != null" >

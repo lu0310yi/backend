@@ -14,8 +14,11 @@ import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +30,22 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletResponse response = servletRequestAttributes.getResponse();
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+
+//        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//        if ("OPTIONS".equals(request.getMethod())) {
+//            String requestHeader = request.getHeader("Access-Control-Request-Headers");
+//            if(requestHeader !=null) {
+//                response.addHeader("Access-Control-Allow-Headers", requestHeader );
+//            }
+//            response.addHeader("Access-Control-Allow-Origin", "*");
+//            return true ;
+//        }
+        if(request.getMethod().toUpperCase().equals("OPTIONS")){
+            return true;//通过所有OPTION请求
+        }
         if(!(handler instanceof HandlerMethod)){
             return true;
         }

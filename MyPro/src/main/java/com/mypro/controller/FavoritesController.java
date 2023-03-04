@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class FavoritesController {
         return favoritesService.info(favoritesId);
     }
     @GetMapping("/favorites/profile/items/{favoritesId}")
-    List<Article> items(@PathVariable("favoritesId")Long favoritesId){
+    HashMap<String,List<Long>> items(@PathVariable("favoritesId")Long favoritesId){
         return favoritesService.getItems(favoritesId);
     }
     @PostMapping("/favorites/operation/collect/{favoritesId}")
